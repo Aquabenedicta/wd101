@@ -30,43 +30,38 @@ const saveUserForm = (event) => {
     const entry = { name, email, password, dob, acceptTerms };
     userEntries.push(entry);
     localStorage.setItem("userEntries", JSON.stringify(userEntries));
-    displayEntries();
+
+    addEntryToTable(entry);
     userform.reset();
+};
+
+const addEntryToTable = (entry) => {
+    const tableBody = document.querySelector("#user-table tbody");
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${entry.name}</td>
+        <td>${entry.email}</td>
+        <td>${entry.password}</td>
+        <td>${entry.dob}</td>
+        <td>${entry.acceptTerms ? "Yes" : "No"}</td>
+    `;
+
+    tableBody.appendChild(row);
 };
 
 const displayEntries = () => {
     const savedEntries = JSON.parse(localStorage.getItem("userEntries")) || [];
+    const tableBody = document.querySelector("#user-table tbody");
+    tableBody.innerHTML = ""; // Clear previous rows
 
-    const rows = savedEntries.map(entry => `
-        <tr>
-            <td>${entry.name}</td>
-            <td>${entry.email}</td>
-            <td>${entry.password}</td>
-            <td>${entry.dob}</td>
-            <td>${entry.acceptTerms ? "True" : "False"}</td>
-        </tr>
-    `).join("");
-
-    const table = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Password</th>
-                    <th>Date of Birth</th>
-                    <th>Accepted Terms?</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows || `<tr><td colspan="5">No entries yet</td></tr>`}
-            </tbody>
-        </table>
-    `;
-
-    document.getElementById("display").innerHTML = table;
+    savedEntries.forEach(entry => {
+        addEntryToTable(entry);
+    });
 };
 
+// Event Listeners
 userform.addEventListener("submit", saveUserForm);
 window.addEventListener("DOMContentLoaded", displayEntries);
+
 
