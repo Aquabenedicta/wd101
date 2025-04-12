@@ -1,6 +1,16 @@
-let userform = document.getElementById("user-form");
-
+const userform = document.getElementById("user-form");
 let userEntries = JSON.parse(localStorage.getItem("userEntries")) || [];
+
+const getAge = (dob) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+};
 
 const saveUserForm = (event) => {
     event.preventDefault();
@@ -11,36 +21,34 @@ const saveUserForm = (event) => {
     const dob = document.getElementById("dob").value;
     const acceptTerms = document.getElementById("acceptTerms").checked;
 
-    const entry = {
-        name,
-        email,
-        password,
-        dob,
-        acceptTerms
-    };
+    const age = getAge(dob);
+    if (age < 18 || age > 55) {
+        alert("You must be between 18 and 55 years old to register.");
+        return;
+    }
 
+    const entry = { name, email, password, dob, acceptTerms };
     userEntries.push(entry);
     localStorage.setItem("userEntries", JSON.stringify(userEntries));
-    displayEntries(); // show updated entries
-    userform.reset(); // optional: reset form after submit
+    displayEntries();
+    userform.reset();
 };
 
 const displayEntries = () => {
     const savedEntries = JSON.parse(localStorage.getItem("userEntries")) || [];
-    const tableEntries = savedEntries.map((entry) => {
-        return `
-            <tr>
-                <td>${entry.name}</td>
-                <td>${entry.email}</td>
-                <td>${entry.password}</td>
-                <td>${entry.dob}</td>
-                <td>${entry.acceptTerms ? "True" : "False"}</td>
-            </tr>
-        `;
-    }).join("");
+
+    const rows = savedEntries.map(entry => `
+        <tr>
+            <td>${entry.name}</td>
+            <td>${entry.email}</td>
+            <td>${entry.password}</td>
+            <td>${entry.dob}</td>
+            <td>${entry.acceptTerms ? "True" : "False"}</td>
+        </tr>
+    `).join("");
 
     const table = `
-        <table border="1" style="width:100%; border-collapse: collapse;">
+        <table>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -51,7 +59,7 @@ const displayEntries = () => {
                 </tr>
             </thead>
             <tbody>
-                ${tableEntries}
+                ${rows || `<tr><td colspan="5">No entries yet</td></tr>`}
             </tbody>
         </table>
     `;
@@ -60,4 +68,5 @@ const displayEntries = () => {
 };
 
 userform.addEventListener("submit", saveUserForm);
-window.addEventListener("DOMContentLoaded", displayEntries); // display on page load
+window.addEventListener("DOMContentLoaded", displayEntries);
+
