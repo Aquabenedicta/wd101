@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Sign Up Page</title>
     <style>
         * {
             box-sizing: border-box;
@@ -15,8 +15,9 @@
             background: #f0f2f5;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 30px;
         }
 
         .login-container {
@@ -25,7 +26,7 @@
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
         }
 
         .login-container h2 {
@@ -53,15 +54,6 @@
             margin-bottom: 18px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            transition: border-color 0.3s;
-        }
-
-        input#name:invalid:focus {
-            border: 1px solid red;
-        }
-
-        input#email:invalid:focus {
-            border: 1px solid red;
         }
 
         input:focus {
@@ -87,19 +79,38 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
         }
 
         button:hover {
             background-color: #0056b3;
         }
 
+        #display {
+            margin-top: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h2>Sign Up</h2>
-        <form id="user-form" method="POST">
+        <form id="user-form">
             <label for="name">Name</label>
             <input required type="text" id="name" name="name">
 
@@ -107,22 +118,22 @@
             <input required type="email" id="email" name="email">
 
             <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+            <input required type="password" id="password" name="password">
 
             <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob">
+            <input required type="date" id="dob" name="dob">
 
             <div class="checkbox-group">
-                <input type="checkbox" id="acceptTerms" name="acceptTerms">
+                <input required type="checkbox" id="acceptTerms" name="acceptTerms">
                 <label for="acceptTerms">Accept Terms & Conditions</label>
             </div>
 
             <button type="submit">Submit</button>
         </form>
+
+        <div id="display"></div>
     </div>
-    <div id="display" style="margin-top: 30px;"></div>
-    <script src="index.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
- 
